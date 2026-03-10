@@ -1,26 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Noto+Sans+JP:wght@300;400;500&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --forest: #1a3a0f;
+  --forest-light: #2d5a1b;
+  --brown: #5c3317;
+  --cream: #faf7f2;
+  --sand: #e8c87a;
+  --bark: #8b6000;
+  --mist: #eef4e8;
+  --lime: #c5e85a;
+  --pop-orange: #ff6b35;
+  --pop-yellow: #ffd93d;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--cream);
+  color: #1a1a1a;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+.font-syne {
+  font-family: 'Syne', sans-serif;
+}
+
+/* card hover lift */
+.camp-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.camp-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+}
+
+/* marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 18s linear infinite;
+}
+
+/* dot pattern bg */
+.dot-pattern {
+  background-image: radial-gradient(circle, #1a3a0f22 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Leaflet overrides */
+.leaflet-container {
+  background: #d4e4c8;
 }
