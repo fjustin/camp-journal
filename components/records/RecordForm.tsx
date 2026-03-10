@@ -49,19 +49,19 @@ export default function RecordForm() {
   };
 
   const inputClass =
-    "w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2";
+    "w-full border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2";
   const inputStyle = {
-    borderColor: "var(--sand)",
-    backgroundColor: "white",
-    "--tw-ring-color": "var(--forest)",
+    borderColor: "#ddd",
+    backgroundColor: "#fafafa",
+    "--tw-ring-color": "var(--lime)",
   } as React.CSSProperties;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* キャンプ場名 */}
       <div>
-        <label className="block text-sm font-medium mb-1.5" style={{ color: "var(--brown)" }}>
-          キャンプ場名 <span className="text-red-500">*</span>
+        <label className="block text-xs font-bold tracking-widest mb-1.5" style={{ color: "var(--bark)" }}>
+          CAMPSITE NAME <span className="text-red-500">*</span>
         </label>
         <input
           name="name"
@@ -74,8 +74,8 @@ export default function RecordForm() {
 
       {/* 訪問日 */}
       <div>
-        <label className="block text-sm font-medium mb-1.5" style={{ color: "var(--brown)" }}>
-          訪問日 <span className="text-red-500">*</span>
+        <label className="block text-xs font-bold tracking-widest mb-1.5" style={{ color: "var(--bark)" }}>
+          DATE <span className="text-red-500">*</span>
         </label>
         <input
           name="date"
@@ -88,16 +88,16 @@ export default function RecordForm() {
 
       {/* 場所 */}
       <div>
-        <label className="block text-sm font-medium mb-1.5" style={{ color: "var(--brown)" }}>
-          場所 <span className="text-red-500">*</span>
+        <label className="block text-xs font-bold tracking-widest mb-1.5" style={{ color: "var(--bark)" }}>
+          LOCATION <span className="text-red-500">*</span>
         </label>
         <LocationPicker lat={lat} lng={lng} onChange={(la, lo) => { setLat(la); setLng(lo); }} />
       </div>
 
       {/* メモ */}
       <div>
-        <label className="block text-sm font-medium mb-1.5" style={{ color: "var(--brown)" }}>
-          メモ
+        <label className="block text-xs font-bold tracking-widest mb-1.5" style={{ color: "var(--bark)" }}>
+          MEMO
         </label>
         <textarea
           name="memo"
@@ -110,12 +110,12 @@ export default function RecordForm() {
 
       {/* 写真 */}
       <div>
-        <label className="block text-sm font-medium mb-1.5" style={{ color: "var(--brown)" }}>
-          写真
+        <label className="block text-xs font-bold tracking-widest mb-1.5" style={{ color: "var(--bark)" }}>
+          PHOTOS
         </label>
         <div
-          className="border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:opacity-80 transition-opacity"
-          style={{ borderColor: "var(--sand)", backgroundColor: "var(--mist)" }}
+          className="border-2 border-dashed rounded-xl p-6 text-center cursor-pointer hover:opacity-80 transition-opacity"
+          style={{ borderColor: "#ccc", backgroundColor: "#fafafa" }}
           onClick={() => fileRef.current?.click()}
         >
           <span className="text-3xl">📷</span>
@@ -168,10 +168,10 @@ export default function RecordForm() {
       <button
         type="submit"
         disabled={submitting || uploading}
-        className="w-full py-3 rounded-lg font-medium text-sm transition-opacity disabled:opacity-50"
-        style={{ backgroundColor: "var(--forest)", color: "white" }}
+        className="w-full py-3 rounded-xl font-syne font-bold text-sm transition-opacity disabled:opacity-50"
+        style={{ backgroundColor: "var(--lime)", color: "var(--forest)" }}
       >
-        {submitting ? "保存中..." : "記録を保存する"}
+        {submitting ? "保存中..." : "記録を保存する →"}
       </button>
     </form>
   );

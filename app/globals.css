@@ -1,34 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Noto+Sans+JP:wght@300;400;500&display=swap');
 @import "tailwindcss";
 
 :root {
-  --forest: #2D5016;
-  --forest-light: #3d6b1f;
-  --brown: #6B3A1F;
-  --cream: #F5F0E8;
-  --sand: #D4A96A;
-  --bark: #8B6914;
-  --mist: #E8EFE0;
-}
-
-@theme inline {
-  --color-background: var(--cream);
-  --color-foreground: #2a1f0f;
-  --font-sans: 'Noto Sans JP', sans-serif;
-  --font-display: 'Playfair Display', serif;
+  --forest: #1a3a0f;
+  --forest-light: #2d5a1b;
+  --brown: #5c3317;
+  --cream: #faf7f2;
+  --sand: #e8c87a;
+  --bark: #8b6000;
+  --mist: #eef4e8;
+  --lime: #c5e85a;
+  --pop-orange: #ff6b35;
+  --pop-yellow: #ffd93d;
 }
 
 body {
   background-color: var(--cream);
-  color: #2a1f0f;
+  color: #1a1a1a;
   font-family: 'Noto Sans JP', sans-serif;
 }
 
-.font-display {
-  font-family: 'Playfair Display', serif;
+.font-syne {
+  font-family: 'Syne', sans-serif;
+}
+
+/* card hover lift */
+.camp-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.camp-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+}
+
+/* marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 18s linear infinite;
+}
+
+/* dot pattern bg */
+.dot-pattern {
+  background-image: radial-gradient(circle, #1a3a0f22 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 /* Leaflet overrides */
 .leaflet-container {
-  background: #e8ede4;
+  background: #d4e4c8;
 }

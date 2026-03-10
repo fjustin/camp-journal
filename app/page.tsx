@@ -7,65 +7,55 @@ export default async function HomePage() {
   const records = await getAllCampRecords() as CampRecord[];
 
   return (
-    <div className="relative" style={{ height: "calc(100vh - 57px)" }}>
-      {/* 地図 */}
+    <div className="relative" style={{ height: "calc(100vh - 89px)" }}>
       <div className="absolute inset-0">
         <MapWrapper records={records} />
       </div>
 
       {/* 左上パネル */}
       <div className="absolute top-4 left-4 z-[1000]">
-        <div
-          className="rounded-2xl px-5 py-4 shadow-lg max-w-xs"
-          style={{ backgroundColor: "rgba(245,240,232,0.95)" }}
-        >
-          <h1 className="font-display text-2xl font-bold" style={{ color: "var(--forest)" }}>
-            キャンプ記録帳
-          </h1>
-          <p className="text-sm mt-1" style={{ color: "var(--brown)" }}>
-            あなたの冒険の軌跡
-          </p>
-          <div className="mt-3 flex items-center gap-3">
-            <div className="text-center">
-              <p className="text-2xl font-bold font-display" style={{ color: "var(--forest)" }}>
-                {records.length}
-              </p>
-              <p className="text-xs" style={{ color: "var(--brown)" }}>
-                キャンプ地
-              </p>
-            </div>
-            <div className="w-px h-8 self-center" style={{ backgroundColor: "var(--sand)" }} />
+        <div className="rounded-2xl overflow-hidden shadow-xl" style={{ width: 220 }}>
+          <div className="px-4 py-3" style={{ backgroundColor: "var(--forest)" }}>
+            <p className="font-syne text-xs font-bold tracking-widest" style={{ color: "var(--lime)" }}>
+              CAMP JOURNAL
+            </p>
+            <p className="font-syne text-3xl font-bold leading-none mt-0.5" style={{ color: "white" }}>
+              {records.length}
+              <span className="text-sm font-normal ml-1" style={{ color: "var(--lime)" }}>spots</span>
+            </p>
+          </div>
+          <div className="px-4 py-3 dot-pattern" style={{ backgroundColor: "var(--cream)" }}>
+            <p className="text-xs mb-2" style={{ color: "var(--brown)" }}>みんなのキャンプ地</p>
             <Link
               href="/records/new"
-              className="text-sm px-3 py-1.5 rounded-lg font-medium transition-opacity hover:opacity-80"
-              style={{ backgroundColor: "var(--forest)", color: "white" }}
+              className="block w-full text-center text-xs font-bold py-2 rounded-lg transition-opacity hover:opacity-90"
+              style={{ backgroundColor: "var(--lime)", color: "var(--forest)" }}
             >
-              + 記録を追加
+              + 記録する
+            </Link>
+            <Link
+              href="/records"
+              className="block w-full text-center text-xs font-medium py-1.5 mt-1.5 rounded-lg transition-opacity hover:opacity-80"
+              style={{ backgroundColor: "transparent", color: "var(--forest)", border: "1px solid var(--forest)" }}
+            >
+              一覧を見る
             </Link>
           </div>
         </div>
       </div>
 
-      {/* 記録なし */}
       {records.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center z-[500] pointer-events-none">
-          <div
-            className="text-center rounded-2xl px-8 py-6 shadow-lg pointer-events-auto"
-            style={{ backgroundColor: "rgba(245,240,232,0.95)" }}
-          >
-            <span className="text-6xl">⛺</span>
-            <h2 className="font-display text-xl font-semibold mt-3" style={{ color: "var(--forest)" }}>
+          <div className="text-center rounded-2xl px-8 py-6 shadow-xl pointer-events-auto" style={{ backgroundColor: "var(--cream)" }}>
+            <div className="w-16 h-16 rounded-full flex items-center justify-center text-3xl mx-auto mb-3" style={{ backgroundColor: "var(--lime)" }}>
+              ⛺
+            </div>
+            <h2 className="font-syne text-xl font-bold" style={{ color: "var(--forest)" }}>
               まだ記録がありません
             </h2>
-            <p className="text-sm mt-1 mb-4" style={{ color: "var(--brown)" }}>
-              最初のキャンプを記録してみましょう
-            </p>
-            <Link
-              href="/records/new"
-              className="inline-block px-5 py-2 rounded-lg text-sm font-medium"
-              style={{ backgroundColor: "var(--forest)", color: "white" }}
-            >
-              記録を追加する
+            <p className="text-xs mt-1 mb-4" style={{ color: "var(--brown)" }}>最初のキャンプを記録してみよう</p>
+            <Link href="/records/new" className="inline-block px-5 py-2 rounded-full text-sm font-bold" style={{ backgroundColor: "var(--lime)", color: "var(--forest)" }}>
+              記録する
             </Link>
           </div>
         </div>

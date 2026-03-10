@@ -3,69 +3,73 @@ import "./globals.css";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Camp Journal | キャンプ記録帳",
-  description: "あなたのキャンプの記憶を残す場所",
+  title: "Camp Journal",
+  description: "みんなのキャンプ記録が集まる場所",
 };
+
+function MarqueeBanner() {
+  const items = ["⛺ CAMP JOURNAL", "📍 記録する", "🌲 シェアする", "🔥 発見する"];
+  const repeated = [...items, ...items, ...items, ...items];
+  return (
+    <div
+      className="overflow-hidden py-1.5 border-b"
+      style={{ backgroundColor: "var(--lime)", borderColor: "#a8cc3a" }}
+    >
+      <div className="marquee-track flex gap-8 w-max">
+        {repeated.map((item, i) => (
+          <span key={i} className="font-syne text-xs font-bold tracking-widest whitespace-nowrap" style={{ color: "var(--forest)" }}>
+            {item}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ja">
       <body className="min-h-screen" style={{ backgroundColor: "var(--cream)" }}>
+        <MarqueeBanner />
         <header
           className="sticky top-0 z-50 border-b"
-          style={{
-            backgroundColor: "var(--forest)",
-            borderColor: "var(--forest-light)",
-          }}
+          style={{ backgroundColor: "var(--forest)", borderColor: "#0f2208" }}
         >
-          <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 group">
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 28 28"
-                fill="none"
-                className="text-amber-300"
+          <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2.5">
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold"
+                style={{ backgroundColor: "var(--lime)", color: "var(--forest)" }}
               >
-                <path d="M14 3 L26 22 H2 Z" fill="#D4A96A" />
-                <path d="M14 10 L20 22 H8 Z" fill="#2D5016" />
-                <rect x="12" y="22" width="4" height="4" fill="#6B3A1F" />
-              </svg>
-              <span
-                className="font-display text-xl font-semibold tracking-wide"
-                style={{ color: "var(--sand)" }}
-              >
+                ⛺
+              </div>
+              <span className="font-syne text-lg font-bold tracking-tight" style={{ color: "white" }}>
                 Camp Journal
               </span>
             </Link>
-            <nav className="flex items-center gap-6">
+            <nav className="flex items-center gap-1">
               <Link
                 href="/"
-                className="text-sm font-medium transition-colors hover:opacity-80"
-                style={{ color: "var(--mist)" }}
+                className="text-xs font-medium px-3 py-1.5 rounded-full transition-colors hover:bg-white/10"
+                style={{ color: "var(--lime)" }}
               >
                 地図
               </Link>
               <Link
                 href="/records"
-                className="text-sm font-medium transition-colors hover:opacity-80"
-                style={{ color: "var(--mist)" }}
+                className="text-xs font-medium px-3 py-1.5 rounded-full transition-colors hover:bg-white/10"
+                style={{ color: "var(--lime)" }}
               >
-                記録一覧
+                みんなの記録
               </Link>
               <Link
                 href="/records/new"
-                className="text-sm font-medium px-4 py-1.5 rounded-full transition-colors"
-                style={{
-                  backgroundColor: "var(--sand)",
-                  color: "var(--forest)",
-                }}
+                className="text-xs font-bold px-4 py-1.5 rounded-full ml-2 transition-opacity hover:opacity-90"
+                style={{ backgroundColor: "var(--lime)", color: "var(--forest)" }}
               >
-                + 記録を追加
+                + 記録する
               </Link>
             </nav>
           </div>
