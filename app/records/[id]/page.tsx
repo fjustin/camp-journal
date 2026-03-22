@@ -11,24 +11,27 @@ type Props = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const record = await prisma.campRecord.findUnique({ where: { id: parseInt(id) } });
+  const record = await prisma.campRecord.findUnique({
+    where: { id: parseInt(id) },
+    include: { campsite: true },
+  });
   if (!record) return { title: "Not Found" };
 
   const photos = JSON.parse(record.photos) as string[];
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
 
   return {
-    title: `${record.name} | Camp Journal`,
+    title: `${record.campsite.name} | Camp Journal`,
     description: record.memo ?? `${format(new Date(record.date), "yyyy年M月d日")}に訪問したキャンプ場`,
     openGraph: {
-      title: record.name,
+      title: record.campsite.name,
       description: record.memo ?? `${format(new Date(record.date), "yyyy年M月d日")}に訪問`,
       images: photos[0] ? [{ url: `${baseUrl}${photos[0]}`, width: 1200, height: 630 }] : [],
       type: "article",
     },
     twitter: {
       card: "summary_large_image",
-      title: record.name,
+      title: record.campsite.name,
       description: record.memo ?? "",
     },
   };
@@ -36,7 +39,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function RecordDetailPage({ params }: Props) {
   const { id } = await params;
-  const record = await prisma.campRecord.findUnique({ where: { id: parseInt(id) } });
+  const record = await prisma.campRecord.findUnique({
+    where: { id: parseInt(id) },
+    include: { campsite: true, user: true },
+  });
   if (!record) notFound();
 
   const photos = JSON.parse(record.photos) as string[];
@@ -48,7 +54,7 @@ export default async function RecordDetailPage({ params }: Props) {
       <div className="flex items-center gap-2 text-xs mb-6" style={{ color: "var(--bark)" }}>
         <Link href="/records" className="hover:underline">みんなの記録</Link>
         <span>/</span>
-        <span className="truncate">{record.name}</span>
+        <span className="truncate">{record.campsite.name}</span>
       </div>
 
       {/* タイトルエリア */}
@@ -60,11 +66,21 @@ export default async function RecordDetailPage({ params }: Props) {
           {formattedDate}
         </div>
         <h1 className="font-syne text-3xl font-bold leading-tight" style={{ color: "var(--forest)" }}>
-          {record.name}
+          {record.campsite.name}
         </h1>
         <p className="text-sm mt-1" style={{ color: "var(--bark)" }}>
-          📍 {record.lat.toFixed(4)}, {record.lng.toFixed(4)}
+          📍 {record.campsite.lat.toFixed(4)}, {record.campsite.lng.toFixed(4)}
         </p>
+        {record.rating && (
+          <p className="mt-1.5 text-lg" style={{ color: "var(--sand)" }}>
+            {"★".repeat(record.rating)}{"☆".repeat(5 - record.rating)}
+          </p>
+        )}
+        {record.user?.name && (
+          <p className="text-xs mt-1" style={{ color: "var(--brown)" }}>
+            by {record.user.name}
+          </p>
+        )}
       </div>
 
       {/* 写真グリッド */}
@@ -75,7 +91,7 @@ export default async function RecordDetailPage({ params }: Props) {
               key={i}
               className={`relative rounded-2xl overflow-hidden ${photos.length === 1 ? "aspect-[4/3]" : i === 0 && photos.length >= 3 ? "col-span-2 aspect-[16/9]" : "aspect-square"}`}
             >
-              <Image src={src} alt={`${record.name}-${i}`} fill className="object-cover" unoptimized />
+              <Image src={src} alt={`${record.campsite.name}-${i}`} fill className="object-cover" unoptimized />
             </div>
           ))}
         </div>
@@ -105,7 +121,7 @@ export default async function RecordDetailPage({ params }: Props) {
         <p className="text-xs mb-4" style={{ color: "var(--brown)" }}>
           Instagramのストーリーズやキャプションにリンクを貼って紹介しよう
         </p>
-        <ShareButton name={record.name} />
+        <ShareButton name={record.campsite.name} />
       </div>
 
       <div className="mt-6 text-center">

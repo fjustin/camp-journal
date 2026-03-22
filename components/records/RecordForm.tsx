@@ -5,9 +5,32 @@ import { createCampRecord } from "@/lib/actions";
 import LocationPicker from "./LocationPicker";
 import Image from "next/image";
 
+function StarRating({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+  const [hovered, setHovered] = useState(0);
+  return (
+    <div className="flex gap-1">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <button
+          key={star}
+          type="button"
+          onClick={() => onChange(star)}
+          onMouseEnter={() => setHovered(star)}
+          onMouseLeave={() => setHovered(0)}
+          className="text-2xl transition-transform hover:scale-110"
+          style={{ color: star <= (hovered || value) ? "var(--sand)" : "#ddd" }}
+        >
+          ★
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function RecordForm() {
   const [lat, setLat] = useState(35.6762);
   const [lng, setLng] = useState(139.6503);
+  const [campsiteName, setCampsiteName] = useState("");
+  const [rating, setRating] = useState(0);
   const [previews, setPreviews] = useState<string[]>([]);
   const [uploadedPaths, setUploadedPaths] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -18,11 +41,9 @@ export default function RecordForm() {
     const files = Array.from(e.target.files ?? []);
     if (files.length === 0) return;
 
-    // プレビュー
     const newPreviews = files.map((f) => URL.createObjectURL(f));
     setPreviews((prev) => [...prev, ...newPreviews]);
 
-    // アップロード
     setUploading(true);
     const fd = new FormData();
     files.forEach((f) => fd.append("files", f));
@@ -44,6 +65,8 @@ export default function RecordForm() {
     const fd = new FormData(form);
     fd.set("lat", lat.toString());
     fd.set("lng", lng.toString());
+    fd.set("campsiteName", campsiteName);
+    if (rating > 0) fd.set("rating", rating.toString());
     uploadedPaths.forEach((p) => fd.append("photos", p));
     await createCampRecord(fd);
   };
@@ -64,7 +87,9 @@ export default function RecordForm() {
           CAMPSITE NAME <span className="text-red-500">*</span>
         </label>
         <input
-          name="name"
+          name="campsiteName"
+          value={campsiteName}
+          onChange={(e) => setCampsiteName(e.target.value)}
           required
           placeholder="例：ふもとっぱらキャンプ場"
           className={inputClass}
@@ -92,6 +117,19 @@ export default function RecordForm() {
           LOCATION <span className="text-red-500">*</span>
         </label>
         <LocationPicker lat={lat} lng={lng} onChange={(la, lo) => { setLat(la); setLng(lo); }} />
+      </div>
+
+      {/* 評価 */}
+      <div>
+        <label className="block text-xs font-bold tracking-widest mb-1.5" style={{ color: "var(--bark)" }}>
+          RATING
+        </label>
+        <StarRating value={rating} onChange={setRating} />
+        {rating > 0 && (
+          <button type="button" onClick={() => setRating(0)} className="text-xs mt-1" style={{ color: "var(--bark)" }}>
+            クリアする
+          </button>
+        )}
       </div>
 
       {/* メモ */}

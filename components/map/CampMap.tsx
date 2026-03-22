@@ -9,7 +9,6 @@ import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import type { CampRecord } from "@/lib/types";
 
-// カスタムテントアイコン
 const tentIcon = L.divIcon({
   html: `<div style="
     width:36px;height:36px;
@@ -33,10 +32,10 @@ function FitBounds({ records }: { records: CampRecord[] }) {
   useEffect(() => {
     if (records.length === 0) return;
     if (records.length === 1) {
-      map.setView([records[0].lat, records[0].lng], 10);
+      map.setView([records[0].campsite.lat, records[0].campsite.lng], 10);
       return;
     }
-    const bounds = L.latLngBounds(records.map((r) => [r.lat, r.lng]));
+    const bounds = L.latLngBounds(records.map((r) => [r.campsite.lat, r.campsite.lng]));
     map.fitBounds(bounds, { padding: [50, 50] });
   }, [records, map]);
   return null;
@@ -66,7 +65,7 @@ export default function CampMap({ records }: Props) {
         return (
           <Marker
             key={record.id}
-            position={[record.lat, record.lng]}
+            position={[record.campsite.lat, record.campsite.lng]}
             icon={tentIcon}
           >
             <Popup>
@@ -74,21 +73,26 @@ export default function CampMap({ records }: Props) {
                 {photos[0] && (
                   <img
                     src={photos[0]}
-                    alt={record.name}
+                    alt={record.campsite.name}
                     className="w-full h-24 object-cover rounded mb-2"
                   />
                 )}
                 <p className="font-semibold text-sm" style={{ color: "var(--forest)" }}>
-                  {record.name}
+                  {record.campsite.name}
                 </p>
                 <p className="text-xs text-gray-500 mt-0.5">
                   {format(new Date(record.date), "yyyy年M月d日", { locale: ja })}
                 </p>
+                {record.rating && (
+                  <p className="text-xs mt-0.5" style={{ color: "var(--sand)" }}>
+                    {"★".repeat(record.rating)}{"☆".repeat(5 - record.rating)}
+                  </p>
+                )}
                 {record.memo && (
                   <p className="text-xs text-gray-600 mt-1 line-clamp-2">{record.memo}</p>
                 )}
                 <Link
-                  href={`/records`}
+                  href={`/records/${record.id}`}
                   className="text-xs mt-2 inline-block"
                   style={{ color: "var(--bark)" }}
                 >
