@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
+import { auth } from "@/auth";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Camp Journal",
@@ -26,9 +28,11 @@ function MarqueeBanner() {
   );
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const session = await auth();
+
   return (
     <html lang="ja">
       <body className="min-h-screen" style={{ backgroundColor: "var(--cream)" }}>
@@ -64,13 +68,44 @@ export default function RootLayout({
               >
                 みんなの記録
               </Link>
-              <Link
-                href="/records/new"
-                className="text-xs font-bold px-4 py-1.5 rounded-full ml-2 transition-opacity hover:opacity-90"
-                style={{ backgroundColor: "var(--lime)", color: "var(--forest)" }}
-              >
-                + 記録する
-              </Link>
+              {session?.user ? (
+                <>
+                  <Link
+                    href="/records/new"
+                    className="text-xs font-bold px-4 py-1.5 rounded-full ml-2 transition-opacity hover:opacity-90"
+                    style={{ backgroundColor: "var(--lime)", color: "var(--forest)" }}
+                  >
+                    + 記録する
+                  </Link>
+                  <Link href="/api/auth/signout" className="flex items-center gap-1.5 ml-2">
+                    {session.user.image ? (
+                      <Image
+                        src={session.user.image}
+                        alt={session.user.name ?? ""}
+                        width={28}
+                        height={28}
+                        className="rounded-full border-2"
+                        style={{ borderColor: "var(--lime)" }}
+                      />
+                    ) : (
+                      <div
+                        className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
+                        style={{ backgroundColor: "var(--lime)", color: "var(--forest)" }}
+                      >
+                        {session.user.name?.[0] ?? "?"}
+                      </div>
+                    )}
+                  </Link>
+                </>
+              ) : (
+                <Link
+                  href="/api/auth/signin"
+                  className="text-xs font-bold px-4 py-1.5 rounded-full ml-2 transition-opacity hover:opacity-90"
+                  style={{ backgroundColor: "var(--lime)", color: "var(--forest)" }}
+                >
+                  ログイン
+                </Link>
+              )}
             </nav>
           </div>
         </header>
