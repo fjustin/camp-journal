@@ -55,15 +55,15 @@ export default async function RootLayout({
             </Link>
             <nav className="flex items-center gap-1">
               <Link
-                href="/"
-                className="text-xs font-medium px-3 py-1.5 rounded-full transition-colors hover:bg-white/10"
+                href="/map"
+                className="hidden sm:block text-xs font-medium px-3 py-1.5 rounded-full transition-colors hover:bg-white/10"
                 style={{ color: "var(--lime)" }}
               >
                 地図
               </Link>
               <Link
                 href="/records"
-                className="text-xs font-medium px-3 py-1.5 rounded-full transition-colors hover:bg-white/10"
+                className="hidden sm:block text-xs font-medium px-3 py-1.5 rounded-full transition-colors hover:bg-white/10"
                 style={{ color: "var(--lime)" }}
               >
                 みんなの記録
