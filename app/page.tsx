@@ -52,8 +52,14 @@ export default async function HomePage() {
         <div
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.4) 50%, #faf7f2 100%)",
+            background: "linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.15) 55%, transparent 75%)",
           }}
+        />
+
+        {/* Bottom fade to next section */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-32"
+          style={{ background: "linear-gradient(to bottom, transparent 0%, #faf7f2 100%)" }}
         />
 
         {/* Subtle vignette */}
